@@ -4,7 +4,7 @@
 Date submitted for review: 3/9/23
 
 Summary of behavior:
-The system initializes, then runs through its main loop. This loop conatins the userInterfaceUpdate function, which is resonsible for most of the functions of the system. In the userInterfaceUpdate function, the ldr sensor is checked. It will display DAY or NIGHT on the LCD depending on the reading. If it detects darkness and the shades are in automatic mode, then the blinds will close. If it is light and the shades are in auto mode, the shades will open. The PIR sensor will sense motion. The display will show MOTION DETECTED or MOTION CEASED based on the reading. It will also turn on the lights when motion is detected, and turn them off when motion is no longer detected. The loop also checks if the shades and the lights are in manual or automatic mode based on the state of the SPDT switches. If in manual mode for either the lights or the shades, there are interrupt functions that will allow the lights or shades to be turned on and off with buttons.
+The system initializes, then runs through its main loop. This loop conatins the userInterfaceUpdate function, which is resonsible for most of the functions of the system. In the userInterfaceUpdate function, the ldr sensor is checked. It will display DAY or NIGHT on the LCD depending on the reading. If it detects darkness and the shades are in automatic mode, then the blinds will close. If it is light and the shades are in auto mode, the shades will open. The PIR sensor will sense motion. The display will show MOTION DETECTED or MOTION CEASED based on the reading. It will also turn on the lights when motion is detected, and turn them off when motion is no longer detected. The loop also checks if the shades and the lights are in manual or automatic mode based on the state of the SPDT switches. If in manual mode for either the lights or the shades, there are functions that will allow the lights or shades to be turned on and off with buttons.
 
 Modules:
 - display: initializes the display, allows strings to be written to the display. based on textbook code
@@ -37,8 +37,8 @@ Tests performed and results:
 - uncovering the ldr sensor (while in manual mode): shades do nothing and LCD displays "DAY"
 - moving in front of the pir sensor (while in manual mode): lights do nothing and LCD displays "MOTION DETECTED"
 - staying still in front of the pir sensor (while in manual mode): lights do nothing and LCD displays "MOTION CEASED"
-- switching the lights switch: changes from auto to manual mode or vice versa, also shows "Lmanl" or "Lauto" on the LCD
-- switching the shades switch: changes from auto to manual mode or vice versa, also shows "Smanl" or "Sauto" on the LCD
+- switching the lights switch: changes from auto to manual mode or vice versa
+- switching the shades switch: changes from auto to manual mode or vice versa
 - pressing the lights button (while in manual mode): lights toggle between on/off
 - pressing the lights button (while in auto mode): nothing
 - pressing the shades button (while in manual mode): shades toggle between open/closed
