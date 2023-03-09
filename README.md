@@ -15,15 +15,15 @@ Modules:
 - ldr sensor: reads the sensor. written based on textbook code.
 - motion sensor: initializes, reads, activates, and deactivates the sensor. based on textbook code.
 
-Hardware connected:
-servo:
-LED1:
-LED2:
-Switch1:
-Switch2:
-Button 1:
-Button 2:
-LDR sensor:
-PIR sensor:
-LCD Display:
-Potentiometer:
+Hardware and pins connected:
+- servo:
+- LED1:
+- LED2:
+- Switch1:
+- Switch2:
+- Button 1:
+- Button 2:
+- LDR sensor:
+- PIR sensor:
+- LCD Display:
+- Potentiometer:
