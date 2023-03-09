@@ -23,10 +23,6 @@ AnalogIn ldr(A2);
 
 //=====[Implementations of public functions]===================================
 
-void ldrSensorInit() { }
-
-void ldrSensorUpdate() { }
-
 float ldrSensorRead()
 {
     return ldr.read();

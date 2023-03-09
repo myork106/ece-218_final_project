@@ -7,16 +7,15 @@
 
 //=====[Declaration of private defines]========================================
 
-#define DUTY_MIN 0.03
-#define DUTY_MAX 0.12
+#define DUTY_MIN 0.05
+#define DUTY_MAX 0.10
 #define PERIOD 0.02
-#define DELAY_TIME 10000
 
 //=====[Declaration of private data types]=====================================
 
 //=====[Declaration and initialization of public global objects]===============
 
-PwmOut servo(PF_9);
+PwmOut servo(PF_8);
 
 //=====[Declaration of external public global variables]=======================
 
@@ -31,17 +30,17 @@ PwmOut servo(PF_9);
 void servoInit()
 {
     servo.period(PERIOD);
-    servo.write(DUTY_MIN);
+    servo.write(DUTY_MAX);
 }
 
 void servoOpen()
 {
-    servo.write(DUTY_MAX/1.75);
+    servo.write(DUTY_MIN);
 }
 
 void servoClose()
 {
-    servo.write(DUTY_MIN);
+    servo.write(DUTY_MAX);
 }
 
 //=====[Implementations of private functions]==================================

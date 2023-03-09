@@ -11,7 +11,8 @@
 
 //=====[Declaration and initialization of public global objects]===============
 
-DigitalOut led(PF_1);
+DigitalOut led1(D10);
+DigitalOut led2(D11);
 
 //=====[Declaration of external public global variables]=======================
 
@@ -25,17 +26,20 @@ DigitalOut led(PF_1);
 
 void lightsInit()
 {
-    led = OFF;
+    led1 = OFF;
+    led2 = OFF;
 }
 
 void lightsOn()
 {
-    led = ON;
+    led1 = ON;
+    led2 = ON;
 }
 
 void lightsOff()
 {
-    led = OFF;
+    led1 = OFF;
+    led2 = OFF;
 }
 
 //=====[Implementations of private functions]==================================

@@ -4,6 +4,9 @@
 
 #include "smart_bedroom_system.h"
 
+#include "lights.h"
+#include "ldr_sensor.h"
+#include "servo.h"
 #include "user_interface.h"
 #include "motion_sensor.h"
 
@@ -25,6 +28,8 @@
 
 void smartBedroomSystemInit()
 {
+    lightsInit();
+    servoInit();
     userInterfaceInit();
 }
 
