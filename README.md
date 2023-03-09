@@ -1,7 +1,7 @@
-# ece-218_final_project
-# Jonathan Fischman and Michael York
 # Smart Bedroom System
+# Jonathan Fischman and Michael York
 
-date submitted for review: 3/9/23
+Date submitted for review: 3/9/23
 
+Summary of behavior:
 
