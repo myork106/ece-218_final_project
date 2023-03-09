@@ -37,8 +37,8 @@ Tests performed and results:
 - uncovering the ldr sensor (while in manual mode): shades do nothing and LCD displays "DAY"
 - moving in front of the pir sensor (while in manual mode): lights do nothing and LCD displays "MOTION DETECTED"
 - staying still in front of the pir sensor (while in manual mode): lights do nothing and LCD displays "MOTION CEASED"
-- switching the lights switch: changes from auto to manual mode or vice versa
-- switching the shades switch: changes from auto to manual mode or vice versa
+- switching the lights switch: changes from auto to manual mode or vice versa, also shows "Lmanl" or "Lauto" on the LCD
+- switching the shades switch: changes from auto to manual mode or vice versa, also shows "Smanl" or "Sauto" on the LCD
 - pressing the lights button (while in manual mode): lights toggle between on/off
 - pressing the lights button (while in auto mode): nothing
 - pressing the shades button (while in manual mode): shades toggle between open/closed
