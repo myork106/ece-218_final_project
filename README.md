@@ -16,14 +16,30 @@ Modules:
 - motion sensor: initializes, reads, activates, and deactivates the sensor. based on textbook code.
 
 Hardware and pins connected:
-- servo:
-- LED1:
-- LED2:
-- Switch1:
-- Switch2:
-- Button 1:
-- Button 2:
-- LDR sensor:
-- PIR sensor:
-- LCD Display:
-- Potentiometer:
+- servo: PF_8
+- LED1: D10
+- LED2: D11
+- Switch 1: PE_3
+- Switch 2: PF_7
+- Button 1: PF_9
+- Button 2: PG_1
+- LDR sensor: A2
+- PIR sensor: PG_0
+- LCD Display: connected as shown in chapter 6 of textbook
+- Potentiometer: connected to display, as shown in chapter 6 of textbook
+
+Tests performed and results:
+- covering the ldr sensor (while in automatic mode): shades close
+- uncovering the ldr sensor (while in automatic mode): shades open
+- moving in front of the pir sensor (while in automatic mode): lights turn on
+- staying still in front of the pir sensor (while in automatic mode): lights turn off
+- covering the ldr sensor (while in manual mode): nothing
+- uncovering the ldr sensor (while in manual mode): nothing
+- moving in front of the pir sensor (while in manual mode): nothing
+- staying still in front of the pir sensor (while in manual mode): nothing
+- switching the lights switch: changes from auto to manual mode or vice versa
+- switching the shades switch: changes from auto to manual mode or vice versa
+- pressing the lights button (while in manual mode): lights toggle between on/off
+- pressing the lights button (while in auto mode): nothing
+- pressing the shades button (while in manual mode): shades toggle between open/closed
+- pressing the shades button (while in auto mode): nothing
