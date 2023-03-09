@@ -28,6 +28,7 @@
 
 void smartBedroomSystemInit()
 {
+    debounceButtonInit();
     lightsInit();
     servoInit();
     userInterfaceInit();

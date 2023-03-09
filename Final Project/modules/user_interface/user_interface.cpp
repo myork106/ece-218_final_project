@@ -15,18 +15,31 @@
 //=====[Declaration of private defines]========================================
 
 #define DISPLAY_REFRESH_TIME_MS 1000
+#define DEBOUNCE_BUTTON_TIME_MS 40 
 
 //=====[Declaration of private data types]=====================================
 
+typedef enum {
+    BUTTON_UP,
+    BUTTON_FALLING,
+    BUTTON_DOWN,
+    BUTTON_RISING
+} buttonState_t;
+
 //=====[Declaration and initialization of public global objects]===============
 
-InterruptIn lightsButton(PF_9);
-InterruptIn shadesButton(PG_1);
+DigitalIn lightsButton(PF_9);
+DigitalIn shadesButton(PG_1);
 
 DigitalIn shadesSwitch(PF_7);
 DigitalIn lightsSwitch(PE_3);
 
 //=====[Declaration of external public global variables]=======================
+
+int accumulatedDebounceButtonTime = 0;
+int numberOfEnterButtonReleasedEvents = 0;
+buttonState_t lightsButtonState;
+buttonState_t shadesButtonState;
 
 //=====[Declaration and initialization of public global variables]=============
 
@@ -43,20 +56,124 @@ bool shadesAreOpen = OFF;
 static void userInterfaceDisplayInit();
 static void userInterfaceDisplayUpdate();
 static void modeUpdate();
-static void lightsButtonCallback();
 static void shadesButtonCallback();
 
 //=====[Implementations of public functions]===================================
 
+void debounceButtonInit()
+{
+
+lightsButton.mode(PullUp);
+shadesButton.mode(PullUp);
+
+if( !lightsButton ) {
+    lightsButtonState = BUTTON_DOWN;
+    } else {
+    lightsButtonState = BUTTON_UP;
+    }
+
+if( !shadesButton ) {
+    shadesButtonState = BUTTON_DOWN;
+    } else {
+    shadesButtonState = BUTTON_UP;
+    }
+}
+
+bool lightsDebounceButtonUpdate()
+{
+    bool lightsButtonReleasedEvent = false;
+    switch( lightsButtonState ) {
+        case BUTTON_UP: 
+            if( !lightsButton ) {
+                lightsButtonState = BUTTON_FALLING;
+                accumulatedDebounceButtonTime = 0;
+                } 
+        break;
+        case BUTTON_FALLING:
+            if( accumulatedDebounceButtonTime >= DEBOUNCE_BUTTON_TIME_MS ) {
+                if( !lightsButton ) {
+                    lightsButtonState = BUTTON_DOWN;
+                } else {
+                    lightsButtonState = BUTTON_UP;
+                }
+            }
+            accumulatedDebounceButtonTime = accumulatedDebounceButtonTime +
+            SYSTEM_TIME_INCREMENT_MS;
+        break;
+        case BUTTON_DOWN:
+            if( lightsButton ) {
+                lightsButtonState = BUTTON_RISING;
+                accumulatedDebounceButtonTime = 0;
+                }
+        break;
+        case BUTTON_RISING:
+            if( accumulatedDebounceButtonTime >= DEBOUNCE_BUTTON_TIME_MS ) {
+                if( lightsButton ) {
+                    lightsButtonState = BUTTON_UP;
+                    lightsButtonReleasedEvent = true;
+                } else {
+                    lightsButtonState = BUTTON_DOWN;
+                }
+            }
+            accumulatedDebounceButtonTime = accumulatedDebounceButtonTime +
+            SYSTEM_TIME_INCREMENT_MS;
+        break;
+    default:
+        debounceButtonInit();
+    break;
+    }
+    return lightsButtonReleasedEvent;
+}
+
+bool shadesDebounceButtonUpdate()
+{
+    bool shadesButtonReleasedEvent = false;
+    switch( shadesButtonState ) {
+        case BUTTON_UP: 
+            if( !shadesButton ) {
+                shadesButtonState = BUTTON_FALLING;
+                accumulatedDebounceButtonTime = 0;
+                } 
+        break;
+        case BUTTON_FALLING:
+            if( accumulatedDebounceButtonTime >= DEBOUNCE_BUTTON_TIME_MS ) {
+                if( !shadesButton ) {
+                    shadesButtonState = BUTTON_DOWN;
+                } else {
+                    shadesButtonState = BUTTON_UP;
+                }
+            }
+            accumulatedDebounceButtonTime = accumulatedDebounceButtonTime +
+            SYSTEM_TIME_INCREMENT_MS;
+        break;
+        case BUTTON_DOWN:
+            if( shadesButton ) {
+                shadesButtonState = BUTTON_RISING;
+                accumulatedDebounceButtonTime = 0;
+                }
+        break;
+        case BUTTON_RISING:
+            if( accumulatedDebounceButtonTime >= DEBOUNCE_BUTTON_TIME_MS ) {
+                if( shadesButton ) {
+                    shadesButtonState = BUTTON_UP;
+                    shadesButtonReleasedEvent = true;
+                } else {
+                    shadesButtonState = BUTTON_DOWN;
+                }
+            }
+            accumulatedDebounceButtonTime = accumulatedDebounceButtonTime +
+            SYSTEM_TIME_INCREMENT_MS;
+        break;
+    default:
+        debounceButtonInit();
+    break;
+    }
+    return shadesButtonReleasedEvent;
+}
+
 void userInterfaceInit()
 {
     userInterfaceDisplayInit();
-
-    lightsButton.mode(PullUp);
-    shadesButton.mode(PullUp);
-    
-    lightsButton.fall(&lightsButtonCallback);
-    shadesButton.fall(&shadesButtonCallback);
 }
 
 void userInterfaceUpdate()
@@ -82,30 +199,34 @@ static void userInterfaceDisplayUpdate()
 {
     static int accumulatedDisplayTime = 0;
     
+    if (!lightsAutoMode) {
+        if ((!lightsAreOn) && (lightsDebounceButtonUpdate())) {
+            lightsOn();
+            lightsAreOn = ON;
+
+        }
+        if ((lightsAreOn) && (lightsDebounceButtonUpdate())) {
+            lightsOff();
+            lightsAreOn = OFF;
+        }
+    }
+
+    if (!shadesAutoMode) {
+        if ((!shadesAreOpen) && (shadesDebounceButtonUpdate())) {
+            servoOpen();
+            shadesAreOpen = ON;
+
+        }
+        if ((shadesAreOpen) && (shadesDebounceButtonUpdate())) {
+            servoClose();
+            shadesAreOpen = OFF;
+        }
+    }
+
     if( accumulatedDisplayTime >=
         DISPLAY_REFRESH_TIME_MS ) {
 
         accumulatedDisplayTime = 0;
-
-
-        if (shadesAutoMode) {
-            displayCharPositionWrite ( 5,0 );
-            displayStringWrite( "SAuto" );
-        }
-        else{
-            displayCharPositionWrite ( 5,0 );
-            displayStringWrite( "SManl" );
-        }
-
-        if (lightsAutoMode) {
-            displayCharPositionWrite ( 11,0 );
-            displayStringWrite( "LAuto" );
-        }
-        else{
-            displayCharPositionWrite ( 11,0 );
-            displayStringWrite( "LManl" );
-        }
-
 
         if( motionSensorRead() ) {
             displayCharPositionWrite ( 8,1 );
@@ -142,8 +263,7 @@ static void userInterfaceDisplayUpdate()
         }
 
     } else {
-        accumulatedDisplayTime =
-            accumulatedDisplayTime + SYSTEM_TIME_INCREMENT_MS;        
+        accumulatedDisplayTime = accumulatedDisplayTime + SYSTEM_TIME_INCREMENT_MS;        
     } 
 }
 
@@ -159,31 +279,5 @@ static void modeUpdate() {
     }
     else {
         shadesAutoMode = ON;
-    }
-}
-
-static void lightsButtonCallback() {
-    if (!lightsAutoMode){
-        if (lightsAreOn){
-            lightsOff();
-            lightsAreOn = OFF;
-        }
-        else{
-            lightsOn();
-            lightsAreOn = ON;
-        }
-    }
-}
-
-static void shadesButtonCallback() {
-    if (!shadesAutoMode){
-        if (shadesAreOpen) {
-            servoClose();
-            shadesAreOpen = OFF;
-        }
-        else{
-            servoOpen();
-            shadesAreOpen = ON;
-        }
     }
 }

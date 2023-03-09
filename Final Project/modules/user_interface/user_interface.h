@@ -9,6 +9,9 @@
 
 //=====[Declarations (prototypes) of public functions]=========================
 
+void debounceButtonInit();
+bool lightsDebounceButtonUpdate();
+bool shadesDebounceButtonUpdate();
 void userInterfaceInit();
 void userInterfaceUpdate();
 
