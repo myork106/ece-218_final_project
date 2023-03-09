@@ -29,14 +29,14 @@ Hardware and pins connected:
 - Potentiometer: connected to display, as shown in chapter 6 of textbook
 
 Tests performed and results:
-- covering the ldr sensor (while in automatic mode): shades close
-- uncovering the ldr sensor (while in automatic mode): shades open
-- moving in front of the pir sensor (while in automatic mode): lights turn on
-- staying still in front of the pir sensor (while in automatic mode): lights turn off
-- covering the ldr sensor (while in manual mode): nothing
-- uncovering the ldr sensor (while in manual mode): nothing
-- moving in front of the pir sensor (while in manual mode): nothing
-- staying still in front of the pir sensor (while in manual mode): nothing
+- covering the ldr sensor (while in automatic mode): shades close and LCD displays "NIGHT"
+- uncovering the ldr sensor (while in automatic mode): shades open and LCD displays "DAY"
+- moving in front of the pir sensor (while in automatic mode): lights turn on and LCD displays "MOTION DETECTED"
+- staying still in front of the pir sensor (while in automatic mode): lights turn off and LCD displays "MOTION CEASED"
+- covering the ldr sensor (while in manual mode): shades do nothing and LCD displays "NIGHT"
+- uncovering the ldr sensor (while in manual mode): shades do nothing and LCD displays "DAY"
+- moving in front of the pir sensor (while in manual mode): lights do nothing and LCD displays "MOTION DETECTED"
+- staying still in front of the pir sensor (while in manual mode): lights do nothing and LCD displays "MOTION CEASED"
 - switching the lights switch: changes from auto to manual mode or vice versa
 - switching the shades switch: changes from auto to manual mode or vice versa
 - pressing the lights button (while in manual mode): lights toggle between on/off
